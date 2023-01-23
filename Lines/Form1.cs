@@ -9,6 +9,7 @@ namespace Lines
         Graphics g;
         Pen pen;
         int centerx, centery, angle, segments;
+
         double radians;
 
 
@@ -17,11 +18,6 @@ namespace Lines
             InitializeComponent();
             centerx = pictureBox1.Width / 2;
             centery= pictureBox1.Height / 2;
-
-            a = new Point(0,0);
-            b = new Point(0,100);
-            c = new Point(100,100);
-            d = new Point(100, 0);
 
 
             bmp =new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -37,8 +33,13 @@ namespace Lines
                           radius + radius, radius + radius);
         }
 
+
         public void Render(double angle)
         {
+            a = new Point(0, 0);
+            b = new Point(0, 100);
+            c = new Point(100, 100);
+            d = new Point(100, 0);
 
             a2 = new PointF(centerx + a.X, centery - a.Y);
             a2.X = centerx+(float)((a.X * Math.Cos(angle)) - (a.Y * Math.Sin(angle)));
@@ -63,27 +64,82 @@ namespace Lines
             g.DrawLine(Pens.Gray, c2, d2);
             g.DrawLine(Pens.Gray, d2, a2);
 
+
+
+            pictureBox1.Refresh();
+        }
+
+        public void RenderSelf(double angle)
+        {
+            a = new Point(-50, -50);
+            b = new Point(-50, 50);
+            c = new Point(50, 50);
+            d = new Point(50, -50);
+
+            a2 = new PointF(centerx + a.X, centery - a.Y);
+            a2.X = centerx+50 + (float)((a.X * Math.Cos(angle)) - (a.Y * Math.Sin(angle)));
+            a2.Y = centery-50 - (float)((a.X * Math.Sin(angle)) + (a.Y * Math.Cos(angle)));
+
+            b2 = new PointF(centerx + b.X, centery - b.Y);
+            b2.X = centerx+50 + (float)((b.X * Math.Cos(angle)) - (b.Y * Math.Sin(angle)));
+            b2.Y = centery-50 - (float)((b.X * Math.Sin(angle)) + (b.Y * Math.Cos(angle)));
+
+
+            c2 = new PointF(centerx + c.X, centery - c.Y);
+            c2.X = centerx+50 + (float)((c.X * Math.Cos(angle)) - (c.Y * Math.Sin(angle)));
+            c2.Y = centery-50 - (float)((c.X * Math.Sin(angle)) + (c.Y * Math.Cos(angle)));
+
+
+            d2 = new PointF(centerx + d.X, centery - d.Y);
+            d2.X = centerx+50 + (float)((d.X * Math.Cos(angle)) - (d.Y * Math.Sin(angle)));
+            d2.Y = centery-50 - (float)((d.X * Math.Sin(angle)) + (d.Y * Math.Cos(angle)));
+
+            g.DrawLine(Pens.Gray, a2, b2);
+            g.DrawLine(Pens.Gray, b2, c2);
+            g.DrawLine(Pens.Gray, c2, d2);
+            g.DrawLine(Pens.Gray, d2, a2);
+
+
+
+            pictureBox1.Refresh();
+        }
+        public void RenderCenter(double angle)
+        {
+            a = new Point(-50, -50);
+            b = new Point(-50, 50);
+            c = new Point(50, 50);
+            d = new Point(50, -50);
+
+            a2 = new PointF(centerx + a.X, centery - a.Y);
+            a2.X = centerx + (float)((a.X * Math.Cos(angle)) - (a.Y * Math.Sin(angle)));
+            a2.Y = centery - (float)((a.X * Math.Sin(angle)) + (a.Y * Math.Cos(angle)));
+
+            b2 = new PointF(centerx + b.X, centery - b.Y);
+            b2.X = centerx + (float)((b.X * Math.Cos(angle)) - (b.Y * Math.Sin(angle)));
+            b2.Y = centery - (float)((b.X * Math.Sin(angle)) + (b.Y * Math.Cos(angle)));
+
+
+            c2 = new PointF(centerx + c.X, centery - c.Y);
+            c2.X = centerx + (float)((c.X * Math.Cos(angle)) - (c.Y * Math.Sin(angle)));
+            c2.Y = centery - (float)((c.X * Math.Sin(angle)) + (c.Y * Math.Cos(angle)));
+
+
+            d2 = new PointF(centerx + d.X, centery - d.Y);
+            d2.X = centerx + (float)((d.X * Math.Cos(angle)) - (d.Y * Math.Sin(angle)));
+            d2.Y = centery - (float)((d.X * Math.Sin(angle)) + (d.Y * Math.Cos(angle)));
+
+            g.DrawLine(Pens.Gray, a2, b2);
+            g.DrawLine(Pens.Gray, b2, c2);
+            g.DrawLine(Pens.Gray, c2, d2);
+            g.DrawLine(Pens.Gray, d2, a2);
+
+
             pictureBox1.Refresh();
         }
 
         double DegreesToRadians(int angle)
         {
             return angle * Math.PI / 180;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-            angle =int.Parse(textBox1.Text);
-            radians=DegreesToRadians(angle);
-            Render(radians);
-            //Render2(a, b, radians);
-            DrawCircle(g, pen, centerx, centery, 141);
-            DrawCircle(g, pen, centerx, centery, 100);
-            //g.DrawLine(Pens.Gray, x0, x1);
-            //g.DrawLine(Pens.Gray, y0, y1);
-            pictureBox1.Refresh();
-
         }
 
         private void Pattern(int segments)
@@ -95,10 +151,28 @@ namespace Lines
                 Render(radians);
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            angle =int.Parse(textBox1.Text);
+            radians=DegreesToRadians(angle);
+            Render(radians);
+            DrawCircle(g, pen, centerx, centery, 141);
+            DrawCircle(g, pen, centerx, centery, 100);
+            g.DrawLine(Pens.Green, centerx, 0, centerx, pictureBox1.Height);
+            g.DrawLine(Pens.Green, 0, centery, pictureBox1.Width, centery);
+            pictureBox1.Refresh();
+
+        }
+
+        
         private void button2_Click(object sender, EventArgs e)
         {
             DrawCircle(g, pen, centerx, centery, 141);
             DrawCircle(g, pen, centerx, centery, 100);
+            g.DrawLine(Pens.Green, centerx, 0, centerx, pictureBox1.Height);
+            g.DrawLine(Pens.Green, 0, centery, pictureBox1.Width, centery);
             segments = int.Parse(textBox2.Text);
             Pattern(segments);
         }
@@ -108,5 +182,26 @@ namespace Lines
             g.Clear(Color.Black);
             pictureBox1.Refresh();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            g.DrawLine(Pens.Green, centerx, 0, centerx, pictureBox1.Height);
+            g.DrawLine(Pens.Green, 0, centery, pictureBox1.Width, centery);
+            angle = int.Parse(textBox4.Text);
+            radians = DegreesToRadians(angle);
+            RenderSelf(radians);
+            pictureBox1.Refresh();
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            g.DrawLine(Pens.Green, centerx, 0, centerx, pictureBox1.Height);
+            g.DrawLine(Pens.Green, 0, centery, pictureBox1.Width, centery);
+            angle = int.Parse(textBox3.Text);
+            radians = DegreesToRadians(angle);
+            RenderCenter(radians);
+            pictureBox1.Refresh();
+        }
+
+
     }
 }
